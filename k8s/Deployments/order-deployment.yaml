@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order
+  template:
+    metadata:
+      labels:
+        app: order
+    spec:
+      containers:
+      - name: order
+        image: iampoonamhajare/order-service:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5002
+        volumeMounts:
+        - mountPath: "/data"
+          name: storage
+      volumes:
+      - name: storage
+        persistentVolumeClaim:
+          claimName: pvc-claim
